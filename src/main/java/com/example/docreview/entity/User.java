@@ -45,3 +45,6 @@ public class User {
         USER, REVIEWER, ADMIN//定義三種角色，放在 User class 裡面（內部類別），因為 Role 只有 User 在用，不需要獨立成一個檔案。
     }
 }
+//USER,     // 一般用戶：只能上傳文件、查看自己的文件狀態
+//REVIEWER, // 審核人員：可查看所有待審文件、執行核准或退回操作
+//ADMIN     // 管理員：擁有所有權限，包含管理帳號與查看統計報表

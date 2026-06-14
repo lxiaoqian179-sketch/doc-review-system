@@ -10,3 +10,7 @@ spring:
 
 server:
   port: 8080
+
+jwt:
+  secret: my-super-secret-key-that-is-long-enough-32chars
+  expiration: 86400000   # 24 小時（單位：毫秒）
