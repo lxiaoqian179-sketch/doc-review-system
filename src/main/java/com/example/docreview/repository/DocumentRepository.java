@@ -2,6 +2,8 @@ package com.example.docreview.repository;
 
 import com.example.docreview.entity.Document;
 import org.springframework.data.jpa.repository.JpaRepository;
+import com.example.docreview.entity.User;
+import java.util.List;
 /**
  * 文件 Repository
  * 負責 documents 資料表的資料存取操作
@@ -21,5 +23,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 
 public interface DocumentRepository extends JpaRepository<Document, Long> {
+    List<Document> findByUploader(User uploader);  // 加這行
     // Week 4 實作文件上傳 API 時，會在這裡新增自訂查詢
 }
