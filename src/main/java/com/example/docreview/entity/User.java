@@ -1,10 +1,11 @@
 package com.example.docreview.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;//→ JPA 的所有註解（@Entity、@Table 等）
 import lombok.Data;//→ 自動產生 getter/setter/toString
 import java.time.LocalDateTime;//→ Java 的日期時間型別
-
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Data//Lombok 的魔法註解。幫你自動產生：
 //所有欄位的 getter / setter
 //toString()、equals()、hashCode()
@@ -24,8 +25,11 @@ public class User {
     //unique = true → 不能重複，帳號不能兩個人一樣
     //length = 50 → 對應 VARCHAR(50)
 
-    @JsonIgnore
+//    @JsonIgnore
+@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+//把 @JsonIgnore 改成只忽略序列化（輸出），但允許反序列化（輸入）
     @Column(nullable = false)
+
     private String password;
     //密碼不加 length 限制，因為之後 BCrypt 加密後會變成固定 60 字元的長字串。
 

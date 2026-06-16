@@ -7,12 +7,20 @@ import com.example.docreview.repository.DocumentRepository;
 import com.example.docreview.repository.UserRepository;
 import com.example.docreview.service.FileStorageService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import com.example.docreview.service.FileStorageService;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @RestController
 @RequestMapping("/api/documents")
@@ -109,5 +117,45 @@ public class DocumentController {
         document.setStatus(DocumentStatus.PENDING);
 
         return ResponseEntity.ok(documentRepository.save(document));
+    }
+
+
+
+    // 6. 下載文件（只能下載自己的）
+    @GetMapping("/{id}/download")
+    public ResponseEntity<Resource> downloadDocument(@PathVariable Long id) {
+        User currentUser = getCurrentUser();
+
+        // 查詢文件，確認是自己的
+        Document doc = documentRepository.findById(id)
+                .filter(d -> d.getUploader().getId().equals(currentUser.getId()))
+                .orElseThrow(() -> new RuntimeException("文件不存在或無權限"));
+
+        try {
+            // 從資料庫的 filePath 組合出完整路徑
+            Path filePath = Paths.get(doc.getFilePath()).toAbsolutePath().normalize();
+            Resource resource = new UrlResource(filePath.toUri());
+
+            if (!resource.exists()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // 設定回應 Header，讓瀏覽器知道這是下載檔案
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .header(HttpHeaders.CONTENT_DISPOSITION,
+                            "attachment; filename=\"" + doc.getFileName() + "\"")
+                    .body(resource);
+
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("檔案路徑錯誤：" + e.getMessage());
+        }
+    }
+
+    // 7. 查詢所有人的文件（只有 ADMIN 能用）
+    @GetMapping("/admin/all")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<Document> getAllDocuments() {
+        return documentRepository.findAll();
     }
 }

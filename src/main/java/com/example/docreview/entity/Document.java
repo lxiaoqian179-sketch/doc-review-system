@@ -1,5 +1,6 @@
 package com.example.docreview.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
  * 記錄文件的基本資訊、儲存路徑、審核狀態與相關人員
  */
 
-
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Data// 告訴 Lombok 自動產生所有 getter / setter / toString / equals / hashCode
 @Entity// 告訴 JPA：這個 class 對應資料庫的一張表
 @Table(name = "documents")// 指定對應的資料表名稱為 documents
