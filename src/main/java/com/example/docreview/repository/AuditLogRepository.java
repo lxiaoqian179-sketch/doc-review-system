@@ -2,6 +2,8 @@ package com.example.docreview.repository;
 
 import com.example.docreview.entity.AuditLog;
 import org.springframework.data.jpa.repository.JpaRepository;
+import com.example.docreview.entity.AuditAction;
+import java.util.List;
 
 /**
  * 審核紀錄 Repository
@@ -25,6 +27,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
  *   → 依操作類型查詢（例如只查所有 REJECT 紀錄）(狀態)
  */
 public interface AuditLogRepository extends JpaRepository<AuditLog, Long> {
-    // 目前使用 JpaRepository 提供的預設方法即可
-    // 後續開發統計功能（/api/stats）時，會在這裡新增自訂查詢
+    // 查詢某份文件的所有操作紀錄
+    List<AuditLog> findByDocumentId(Long documentId);
+    // 查詢某個使用者的所有操作紀錄
+    List<AuditLog> findByOperatorId(Long operatorId);
 }
