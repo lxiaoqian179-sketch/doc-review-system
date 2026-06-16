@@ -41,6 +41,12 @@ public class SecurityConfig {
                         // 使用者管理暫時開放（之後可改成只有 ADMIN 能存取）
                         .requestMatchers("/api/users/**").permitAll()
 
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**"
+                        ).permitAll()
+
 
                         // 其他所有 API 都需要登入（帶有效 token）
                         .anyRequest().authenticated()

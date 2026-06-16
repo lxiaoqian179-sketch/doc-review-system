@@ -23,7 +23,10 @@ import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+
+@Tag(name = "文件", description = "文件上傳、查詢、下載")
 @RestController
 @RequestMapping("/api/documents")
 public class DocumentController {

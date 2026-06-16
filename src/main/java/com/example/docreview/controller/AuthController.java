@@ -4,9 +4,12 @@ import com.example.docreview.dto.LoginRequest;
 import com.example.docreview.dto.LoginResponse;
 import com.example.docreview.security.JwtTokenProvider;
 import com.example.docreview.service.AuthService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "認證", description = "登入與身份驗證")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -19,13 +22,13 @@ public class AuthController {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    // 登入
+    @Operation(summary = "登入", description = "輸入帳號密碼，回傳 JWT token")
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
         return ResponseEntity.ok(authService.login(request));
     }
 
-    // 驗證身份
+    @Operation(summary = "取得當前使用者資訊", description = "帶入 Bearer token，回傳使用者帳號與角色")
     @GetMapping("/me")
     public ResponseEntity<?> me(@RequestHeader("Authorization") String authHeader) {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
