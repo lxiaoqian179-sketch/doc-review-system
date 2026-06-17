@@ -7,6 +7,10 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import com.example.docreview.entity.DocumentStatus; // 確認你的 enum 路徑
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import java.time.LocalDateTime;
+
 /**
  * 文件 Repository
  * 負責 documents 資料表的資料存取操作
@@ -27,6 +31,18 @@ import com.example.docreview.entity.DocumentStatus; // 確認你的 enum 路徑
 
 public interface DocumentRepository extends JpaRepository<Document, Long> {
     List<Document> findByUploader(User uploader);
-    Page<Document> findByStatus(DocumentStatus status, Pageable pageable); // 加這行
-    // Week 4 實作文件上傳 API 時，會在這裡新增自訂查詢
+    Page<Document> findByStatus(DocumentStatus status, Pageable pageable);
+    Page<Document> findByTitleContainingOrDescriptionContainingOrCategoryContaining(
+            String titleKeyword, String descKeyword, String categoryKeyword, Pageable pageable);
+    long countByStatus(DocumentStatus status);//計算文件各狀態的數量
+    @Query("SELECT d.title FROM Document d")
+    List<String> findAllTitles();// 加一個只抓 title 的方法
+    @Query(value = "SELECT DATE(created_at) as date, COUNT(*) as count " +
+            "FROM documents " +
+            "WHERE created_at >= :startDate " +
+            "GROUP BY DATE(created_at) " +
+            "ORDER BY date ASC",
+            nativeQuery = true)
+    List<Object[]> findUploadTrend(@Param("startDate") LocalDateTime startDate);
+    //trend（近 30 天上傳/審核趨勢）
 }

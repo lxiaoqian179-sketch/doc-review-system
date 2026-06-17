@@ -25,6 +25,10 @@ import java.nio.file.Paths;
 import java.util.List;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @Tag(name = "文件", description = "文件上傳、查詢、下載")
 @RestController
@@ -151,4 +155,19 @@ public class DocumentController {
     public List<Document> getAllDocuments() {
         return documentRepository.findAll();
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<Document>> searchDocuments(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<Document> results = documentRepository
+                .findByTitleContainingOrDescriptionContainingOrCategoryContaining(
+                        keyword, keyword, keyword, pageable);
+
+        return ResponseEntity.ok(results);
+    }
 }
+

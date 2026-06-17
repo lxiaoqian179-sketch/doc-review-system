@@ -38,8 +38,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
 
 
-                        // 使用者管理暫時開放（之後可改成只有 ADMIN 能存取）
-                        .requestMatchers("/api/users/**").permitAll()
+                        // 使用者管理（只有 ADMIN 能存取）
+                        .requestMatchers("/api/users/**").hasRole("ADMIN")
 
                         .requestMatchers(
                                 "/swagger-ui/**",
