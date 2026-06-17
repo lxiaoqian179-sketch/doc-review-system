@@ -4,6 +4,9 @@ import com.example.docreview.entity.Document;
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.docreview.entity.User;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import com.example.docreview.entity.DocumentStatus; // 確認你的 enum 路徑
 /**
  * 文件 Repository
  * 負責 documents 資料表的資料存取操作
@@ -23,6 +26,7 @@ import java.util.List;
  */
 
 public interface DocumentRepository extends JpaRepository<Document, Long> {
-    List<Document> findByUploader(User uploader);  // 加這行
+    List<Document> findByUploader(User uploader);
+    Page<Document> findByStatus(DocumentStatus status, Pageable pageable); // 加這行
     // Week 4 實作文件上傳 API 時，會在這裡新增自訂查詢
 }

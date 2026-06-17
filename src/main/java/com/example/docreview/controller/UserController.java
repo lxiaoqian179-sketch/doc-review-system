@@ -50,6 +50,19 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+
+    @PutMapping("/{id}/role")
+    public ResponseEntity<User> updateUserRole(@PathVariable Long id,
+                                               @RequestBody User updated) {
+        return userRepository.findById(id)
+                .map(user -> {
+                    user.setRole(updated.getRole());
+                    user.setUpdatedAt(LocalDateTime.now());
+                    return ResponseEntity.ok(userRepository.save(user));
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         if (!userRepository.existsById(id)) {

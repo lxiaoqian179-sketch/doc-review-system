@@ -1,7 +1,11 @@
 package com.example.docreview.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 /**
  * 審核紀錄表（audit_logs）
@@ -11,6 +15,9 @@ import java.time.LocalDateTime;
 
 @Data// 告訴 Lombok 自動產生所有 getter / setter / toString / equals / hashCode
 @Entity// 告訴 JPA：這個 class 對應資料庫的一張表
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "audit_logs")// 指定對應的資料表名稱為 audit_logs
 public class AuditLog {
 

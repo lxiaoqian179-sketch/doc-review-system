@@ -4,6 +4,7 @@ import com.example.docreview.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
+
 /**
  * 使用者 Repository
  * 負責 users 資料表的資料存取操作
@@ -21,6 +22,7 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUsername(String username);
+    Optional<User> findByEmail(String email);
 }
 // Week 3 實作 JWT 登入時，會在這裡新增 findByUsername
 
