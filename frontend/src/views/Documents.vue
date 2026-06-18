@@ -31,15 +31,19 @@ onMounted(async () => {
           <th>標題</th>
           <th>分類</th>
           <th>狀態</th>
+          <th>描述</th>
+          <th>檔名</th>
           <th>上傳時間</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="doc in documents" :key="doc.id">
-          <td>{{ doc.title }}</td>
-          <td>{{ doc.category }}</td>
-          <td>{{ doc.status }}</td>
-          <td>{{ doc.createdAt }}</td>
+    <td>{{ doc.title }}</td>
+    <td>{{ doc.category }}</td>
+    <td>{{ doc.status }}</td>
+    <td>{{ doc.description }}</td>
+    <td>{{ doc.fileName }}</td>
+    <td>{{ doc.createdAt }}</td>
         </tr>
       </tbody>
     </table>
