@@ -91,5 +91,10 @@ public class Document {
     // 和 createdAt 不同：不能給預設值，因為不是每份文件都已審核
 
 
+    @Column(name = "reject_reason", columnDefinition = "TEXT")
+    private String rejectReason;
+// 最新一次退回原因（若曾被退回），核准後可選擇是否清空，目前保留歷史值
+
+
 
 }

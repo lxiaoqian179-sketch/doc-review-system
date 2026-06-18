@@ -21,6 +21,7 @@ public class DocumentDTO {
     private String reviewerUsername;
     private LocalDateTime createdAt;
     private LocalDateTime reviewedAt;
+    private String rejectReason;
 
     /**
      * 把 Document entity 轉成 DocumentDTO
@@ -37,6 +38,7 @@ public class DocumentDTO {
         dto.setStatus(doc.getStatus().name());
         dto.setCreatedAt(doc.getCreatedAt());
         dto.setReviewedAt(doc.getReviewedAt());
+        dto.setRejectReason(doc.getRejectReason());
 
         if (doc.getUploader() != null) {
             dto.setUploaderId(doc.getUploader().getId());

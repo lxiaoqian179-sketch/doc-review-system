@@ -34,6 +34,9 @@ onMounted(async () => {
           <th>描述</th>
           <th>檔名</th>
           <th>上傳時間</th>
+          <th>退回原因</th>
+          <th>審核人員</th>
+          <th>審核時間</th>
         </tr>
       </thead>
       <tbody>
@@ -44,6 +47,9 @@ onMounted(async () => {
     <td>{{ doc.description }}</td>
     <td>{{ doc.fileName }}</td>
     <td>{{ doc.createdAt }}</td>
+    <td>{{ doc.rejectReason || '-' }}</td>
+    <td>{{ doc.reviewerUsername || '-' }}</td>
+    <td>{{ doc.reviewedAt || '-' }}</td>
         </tr>
       </tbody>
     </table>

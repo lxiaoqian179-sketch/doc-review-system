@@ -53,6 +53,7 @@ public class ReviewService {
         doc.setStatus(DocumentStatus.REJECTED);
         doc.setReviewer(reviewer);
         doc.setReviewedAt(LocalDateTime.now());
+        doc.setRejectReason(comment);   // ← 加這行
         documentRepo.save(doc);
 
         saveLog(doc, reviewer, AuditAction.REJECT, comment);
