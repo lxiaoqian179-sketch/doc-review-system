@@ -44,37 +44,28 @@ const router = createRouter({
   routes
 })
 
-// Navigation Guard（導航守衛）：每次切換路由前都會先跑這段
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, from) => {
   const token = localStorage.getItem('token')
   const role = localStorage.getItem('role')
 
-  // 這個頁面不需要登入（例如登入頁本身），直接放行
+  // 不需要登入的頁面（例如登入頁）
   if (!to.meta.requiresAuth) {
-    // 如果已經登入了又想去登入頁，直接導回首頁
-    if (token) {
-      next('/')
-    } else {
-      next()
-    }
-    return
+    // 已登入又想去登入頁，導回首頁
+    if (token) return '/'
+    return true
   }
 
-  // 需要登入但沒有 token，導回登入頁
-  if (!token) {
-    next('/login')
-    return
-  }
+  // 需要登入但沒有 token
+  if (!token) return '/login'
 
-  // 需要特定角色
+  // 需要特定角色但角色不符
   if (to.meta.roles && !to.meta.roles.includes(role)) {
     alert(`此頁面需要 ${to.meta.roles.join(' 或 ')} 權限`)
-    next('/')
-    return
+    return '/'
   }
 
   // 全部通過，放行
-  next()
+  return true
 })
 
 export default router
